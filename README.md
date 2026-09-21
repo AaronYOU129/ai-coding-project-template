@@ -1,25 +1,25 @@
 # AI Coding Project Template
 
-A reusable GitHub template for reliable AI-assisted software development with Codex, Claude Code, Cursor, and other coding agents.
+A reusable GitHub template that helps AI coding agents understand what you actually want, plan before implementation, stay within scope, and verify the final result against your intended outcome.
 
-It helps developers turn project requirements into tested and verified software through a structured workflow:
-
-**Requirements → Specification → Design → Implementation → Testing → Verification**
+**Intent → Clarification → Specification → Plan → Implementation → Testing → Verification**
 
 ## Why use this template?
 
-AI coding agents can write code quickly, but they can also start implementation too early, lose project context, misunderstand requirements, or declare a task complete without sufficient verification.
+AI coding often fails not because the code is invalid, but because the agent misunderstood the goal, made hidden assumptions, expanded the scope, lost important context, or verified the wrong thing.
 
-This template provides a lightweight structure that keeps the coding agent aligned with the project's requirements, design, implementation plan, and acceptance criteria.
+This template keeps requirements, design decisions, progress, and verification criteria inside the repository so the coding agent can repeatedly refer back to the same source of truth.
+
+The goal is not simply to help AI write code, but to help AI build the thing you actually meant to build.
 
 ## What's included?
 
 - `AGENTS.md` — shared instructions for coding agents
 - `specification.md` — requirements, design, constraints, and acceptance criteria
-- `progress.md` — implementation progress and remaining work
-- `decision-log.md` — important technical decisions
-- `docs/coding-principles.md` — coding principles for AI-assisted development
-- `docs/ai-assisted-development-workflow.md` — the development workflow agents should follow
+- `progress.md` — current status, verified progress, and next work
+- `decision-log.md` — important technical and methodological decisions
+- `docs/coding-principles.md` — coding principles for readable, testable, and maintainable code
+- `docs/ai-assisted-development-workflow.md` — the workflow agents should follow from specification to verification
 
 ## Supported coding agents
 
@@ -29,28 +29,30 @@ This template is designed to work with:
 - Claude Code
 - Cursor
 - GitHub Copilot
-- other coding agents that can read repository-level instructions
+- other coding agents that can read repository-level instructions and project context
 
 ## Quick Start
 
 1. Click **Use this template**.
 2. Select **Create a new repository**.
-3. Describe your project in the generated repository.
-4. Complete `specification.md` before substantial implementation.
-5. Ask your coding agent to read `AGENTS.md` and follow the project workflow.
+3. Describe the project you want to build.
+4. Complete or review `specification.md`.
+5. Ask your coding agent to read `AGENTS.md` before substantial implementation.
 
 Example prompt:
 
-> Read `AGENTS.md` and `specification.md`. Help me clarify the requirements, design the solution, break the work into small testable tasks, implement it, run the relevant tests, and verify the result against the acceptance criteria.
+> Read `AGENTS.md` and `specification.md`. First, restate my intended outcome and identify any ambiguity or hidden assumptions that could materially change the result. Then help me finalize the specification, break the work into small testable tasks, implement within scope, run the relevant checks, and verify the final result against the intended outcome.
 
 ## How it works
 
 ```text
-Requirements
+Intent
+    ↓
+Clarification
     ↓
 Specification
     ↓
-Design
+Plan
     ↓
 Small testable tasks
     ↓
@@ -60,11 +62,21 @@ Testing
     ↓
 Verification
     ↓
-Progress and decision tracking
+Compare against intended outcome
 ```
 
----
+## Core principles
 
+The workflow is built around a few simple rules:
+
+- Understand the intended outcome before substantial implementation.
+- Resolve material ambiguity before coding.
+- Keep important project context in repository files rather than only in chat.
+- Break substantial work into small, independently verifiable tasks.
+- Make the smallest change that fully satisfies the requirements.
+- Avoid unrelated changes and unnecessary complexity.
+- Do not treat passing tests as sufficient when the final result does not match the intended outcome.
+- Never claim completion without verification.
 
 ## FAQ
 
@@ -254,6 +266,7 @@ A task is complete only when:
 
 Code generation alone does not constitute completion.
 
+---
 
 # Project Name
 
@@ -261,17 +274,35 @@ Replace this heading with the project name and summarize the project in one sent
 
 ## Purpose
 
-Describe the problem this project solves, who it serves, and the intended outcome.
+Describe:
+
+- the problem this project solves;
+- who it serves;
+- the intended outcome;
+- and what success looks like.
 
 ## Requirements
 
-List the main functional requirements, quality requirements, constraints, and explicit non-goals.
+List the main:
 
-Before implementation, record the complete requirements, design, and acceptance criteria in [`specification.md`](specification.md).
+- functional requirements;
+- quality requirements;
+- constraints;
+- explicit non-goals;
+- and acceptance criteria.
+
+Before substantial implementation, record the complete requirements, design, and acceptance criteria in [`specification.md`](specification.md).
 
 ## Setup
 
-Document the supported environment, required dependencies, installation commands, configuration, and any external services.
+Document:
+
+- supported environments;
+- required dependencies;
+- installation commands;
+- configuration;
+- required environment variables;
+- and external services.
 
 ```text
 Add setup commands here.
@@ -281,7 +312,9 @@ Never commit credentials or secrets. Use environment variables or an approved se
 
 ## Usage
 
-Show the commands or steps needed to run the project and include representative usage examples.
+Show the commands or steps needed to run the project.
+
+Include representative examples where useful.
 
 ```text
 Add usage examples here.
@@ -291,17 +324,93 @@ Add usage examples here.
 
 Before substantial implementation:
 
-1. Complete [`specification.md`](specification.md).
-2. Review [`AGENTS.md`](AGENTS.md).
+1. Read [`AGENTS.md`](AGENTS.md).
+2. Complete or review [`specification.md`](specification.md).
 3. Follow:
    - [`docs/coding-principles.md`](docs/coding-principles.md)
    - [`docs/ai-assisted-development-workflow.md`](docs/ai-assisted-development-workflow.md)
-4. Track project status in [`progress.md`](progress.md).
-5. Record material decisions in [`decision-log.md`](decision-log.md).
+4. Break substantial work into small, independently verifiable tasks.
+5. Track verified progress in [`progress.md`](progress.md).
+6. Record material decisions in [`decision-log.md`](decision-log.md).
+7. Run the relevant tests and quality checks before declaring completion.
+8. Verify the result against the original intended outcome and acceptance criteria.
 
-When Codex is started from this repository, it automatically reads the root `AGENTS.md`. Other coding agents should be instructed to read it before beginning work if they do not discover it automatically.
+When Codex is started from this repository, it can use the root `AGENTS.md` as repository-level instructions.
 
-Add the project-specific commands for tests, linting, formatting, type checking, and builds here once the technology stack is selected.
+Other coding agents should be instructed to read `AGENTS.md` before beginning substantial work if they do not discover it automatically.
+
+## Testing and Verification
+
+Document the exact commands used for:
+
+```text
+Tests:
+Lint:
+Format:
+Type check:
+Build:
+Other verification:
+```
+
+Verification should cover more than whether the code runs.
+
+Confirm that:
+
+- the expected behavior works;
+- important edge cases and failure modes have been checked;
+- applicable acceptance criteria are satisfied;
+- unrelated behavior was not changed;
+- documentation remains accurate;
+- and the final result matches the intended outcome.
+
+If a required check cannot be run, record:
+
+- what was not checked;
+- why it could not be checked;
+- and what remains uncertain.
+
+## Project Status
+
+Use [`progress.md`](progress.md) to record:
+
+- the current phase;
+- the current focus;
+- verified completed work;
+- blockers;
+- and the next concrete action.
+
+Do not mark work complete until the relevant result has been verified.
+
+## Decisions
+
+Use [`decision-log.md`](decision-log.md) for decisions that materially affect:
+
+- architecture;
+- methodology;
+- interfaces;
+- dependencies;
+- security;
+- privacy;
+- compatibility;
+- operations;
+- or other important tradeoffs.
+
+Do not use the decision log for routine implementation details.
+
+## Completion
+
+Before considering a non-trivial task complete:
+
+1. Confirm the intended outcome.
+2. Verify the applicable acceptance criteria.
+3. Run the relevant automated checks.
+4. Review important edge cases and failure modes.
+5. Review the final diff for unrelated changes and unnecessary complexity.
+6. Confirm that documentation and progress tracking are current.
+7. Confirm that no secrets, private data, or local configuration were introduced.
+8. Compare the final result against the original intended outcome.
+
+A task is complete only when the required behavior has been implemented and verified.
 
 ## License
 
