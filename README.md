@@ -61,7 +61,9 @@ Testing
 Verification
     ↓
 Progress and decision tracking
+```
 
+---
 
 
 # Project Name
