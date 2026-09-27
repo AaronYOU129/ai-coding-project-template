@@ -68,6 +68,78 @@ When implementation is authorized:
 
 Follow the detailed standards in `docs/coding-principles.md`.
 
+### Comments and Rationale
+
+Code comments must preserve reasoning that a future reader cannot reliably recover from
+the code alone. Their purpose is to explain constraints and intent, prevent accidental
+reversal of deliberate choices, and make methodological and safety-critical behavior
+auditable.
+
+- Add a concise comment when code implements a non-obvious methodological choice,
+  statistical assumption, safety or spending constraint, compatibility workaround,
+  reproducibility requirement, or important edge-case policy.
+- Explain **why** the choice exists and, when useful, what would break or become invalid
+  if it were changed. Do not merely translate the next line of code into prose.
+- Keep each inline comment to 15 words or fewer and understandable within five seconds.
+  Move longer reasoning to a docstring or `decision-log.md`, leaving a short pointer.
+- Keep the required module header and use function docstrings to state each function's
+  contract; use inline comments only where naming and structure cannot communicate the
+  rationale clearly enough.
+- Do not add comments to obvious assignments, standard library operations, or readable
+  control flow solely to increase the number of comments. Excess commentary obscures
+  the decisions that actually matter.
+- Update or remove a comment whenever the corresponding behavior changes. A stale
+  rationale is a correctness defect, not harmless documentation debt.
+- During code review, treat unexplained surprising logic as incomplete even when tests
+  pass; either simplify the logic or document the reason it must remain surprising.
+
+### Pipeline Module Headers
+
+For a pipeline with three or more dependent stages, include both `Key Steps` and
+`Main Flow` in the module docstring. They serve different readers and must not duplicate
+the same information.
+
+- `Key Steps` explains what happens in four to seven short, numbered, plain-language
+  stages. Keep one action per step and omit function names unless essential.
+- `Main Flow` shows where the behavior lives by mapping actual function names, important
+  branches, retries, and terminal outputs in a compact indented tree.
+- A reader should understand the workflow from `Key Steps`, then know where to inspect
+  the implementation from `Main Flow`.
+- Keep simple, linear scripts on the standard five-field header; do not add a diagram
+  when it would merely repeat two or three obvious statements.
+
+Use this structure for non-trivial pipelines:
+
+```text
+Purpose:
+    Why the script exists and why its important choices were made.
+
+Inputs:
+    Required inputs and paths.
+
+Outputs:
+    Generated artifacts and paths.
+
+Key Steps:
+    1. Validate inputs and recover saved state.
+    2. Build deterministic work items.
+    3. Execute pending work within safety limits.
+    4. Persist and validate every terminal outcome.
+
+Main Flow:
+    main_workflow()
+        -> validate_inputs()
+        -> build_items()
+        -> execute_item()
+            |-- retryable failure -> retry
+            |-- terminal failure  -> failures output
+            `-- success           -> results output
+        -> validate_outputs()
+
+How to Run:
+    Exact command.
+```
+
 ## Progress and Decisions
 
 - Work on the next incomplete item in `progress.md` unless instructed otherwise.
