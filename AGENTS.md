@@ -19,7 +19,9 @@ Follow the applicable specification, principles, and workflow throughout the tas
 - `decision-log.md` records material decisions and their rationale.
 - `docs/coding-principles.md` defines the coding standards.
 - `docs/ai-assisted-development-workflow.md` defines the development process.
-- `README.md` explains setup, usage, and project orientation.
+- `README.md` is the reader-facing repository landing page: it explains the
+  project's purpose, value, and current status; provides the shortest starting path;
+  and links to detailed documentation without duplicating it.
 
 If these files conflict, stop and resolve the conflict in the appropriate source-of-truth file before implementation.
 
@@ -140,6 +142,29 @@ How to Run:
     Exact command.
 ```
 
+### README and Repository Documentation
+
+Treat `README.md` as the landing page for a first-time repository visitor, not as a
+changelog, experiment diary, or complete operations manual.
+
+- Open with what the project does, why it matters, and its current status.
+- Give readers clear paths to inspect results, reproduce analysis without external
+  calls, or rerun the full workflow when applicable.
+- Put the shortest safe, no-cost starting path before commands that require credentials,
+  external services, approval, or spending.
+- Keep API procedures, human-annotation instructions, recovery procedures, historical
+  exceptions, and audit details in focused files under `docs/`; link to them from the
+  README.
+- Use relative links for files within the repository.
+- Avoid duplicated commands, chronological narration, and stale language describing
+  completed phases as future work.
+- Add badges only when they represent active, verifiable repository services.
+- Update the README whenever setup, public commands, outputs, project status, or
+  supported interfaces change.
+- Verify reader paths, relative links, referenced files, current project status, and
+  no-cost commands against the actual repository before completion.
+- Do not execute paid or externally mutating commands solely to verify documentation.
+
 ## Progress and Decisions
 
 - Work on the next incomplete item in `progress.md` unless instructed otherwise.
@@ -174,7 +199,8 @@ Before declaring a non-trivial coding task complete:
    - regressions;
    - unnecessary complexity;
    - security or compatibility risks.
-6. Confirm that documentation remains accurate.
+6. Confirm that documentation remains accurate; for README changes, verify its reader
+   paths, relative links, referenced files, current status, and safe commands.
 7. Confirm that no credentials, secrets, private data, or local configuration were introduced.
 8. Do not treat passing tests as sufficient when the tests do not cover the complete specification.
 
