@@ -44,9 +44,14 @@ Data → Processing → Estimation → Output
 
 ## 2. Function Design
 
-- Give each function one clear responsibility.
-- Keep functions small when doing so improves clarity.
-- Split functions that combine meaningfully different responsibilities.
+- Give each function one clear responsibility: you can describe it in one sentence
+  without "and", "then", or "also".
+- Keep every function within the size limits defined in `AGENTS.md` under Function
+  Size and Responsibility (40 body lines, 3 nesting levels, complexity 10,
+  5 parameters, 4 returns). Exceed a limit only with a one-sentence reason in the
+  docstring.
+- Split functions that combine different responsibilities, including any function
+  that mixes input/output, computation, formatting, and logging.
 - Use high-level functions to describe the workflow.
 - Use lower-level functions to handle implementation details.
 - Make code read like a newspaper: show the main logic first and the details later.
@@ -121,7 +126,8 @@ Data → Processing → Estimation → Output
 ## 10. Refactoring Guardrails
 
 - Refactor when doing so improves clarity, responsibility boundaries, reuse, or testability.
-- Split large functions when they combine meaningfully different responsibilities.
+- Split functions that exceed the size limits in `AGENTS.md` or combine different
+  responsibilities, in a separate change from feature work.
 - Do not create tiny wrappers with no semantic value.
 - Do not over-engineer short, linear code that is already easy to understand.
 - Refactor incrementally and protect existing behavior with tests.

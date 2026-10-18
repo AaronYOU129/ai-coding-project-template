@@ -20,6 +20,7 @@ The goal is not simply to help AI write code, but to help AI build the thing you
 - `decision-log.md` — important technical and methodological decisions
 - `docs/coding-principles.md` — coding principles for readable, testable, and maintainable code
 - `docs/ai-assisted-development-workflow.md` — the workflow agents should follow from specification to verification
+- `ruff.toml` — linter limits that enforce function size rules for Python code
 
 ## Supported coding agents
 
