@@ -59,7 +59,7 @@ When implementation is authorized:
 ## Implementation Rules
 
 - Keep high-level workflow separate from implementation details.
-- Give each function one clear responsibility.
+- Give each function one clear responsibility (see Function Size and Responsibility).
 - Prefer explicit, readable code over clever shortcuts.
 - Use early returns to reduce unnecessary nesting.
 - Handle invalid inputs and important edge cases explicitly.
@@ -69,6 +69,47 @@ When implementation is authorized:
 - Do not introduce a dependency unless it provides clear value.
 
 Follow the detailed standards in `docs/coding-principles.md`.
+
+### Function Size and Responsibility
+
+These limits are hard defaults, not suggestions. Check them while writing each
+function, not only at the end of the task.
+
+Size limits for every new or modified function:
+
+- at most 40 lines of body, excluding the docstring;
+- at most 3 levels of nesting;
+- at most 10 branches and a cyclomatic complexity of at most 10;
+- at most 5 parameters;
+- at most 4 return statements.
+
+A function may exceed a limit only when splitting it would make the code harder to
+read, such as a flat lookup table or a linear sequence of closely related steps. In
+that case, state the reason in one sentence in the docstring. Exceeding a limit
+without a stated reason is a defect.
+
+Single-responsibility self-check for every new or modified function:
+
+1. Describe what the function does in one sentence. If the sentence needs "and",
+   "then", or "also", split the function.
+2. Name the function as verb plus object. The name must cover everything the
+   function actually does.
+3. Do not mix layers in one function: input/output (files, network, databases),
+   computation, formatting or plotting, and logging. Mixing is acceptable only when
+   the function is short and linear.
+4. If a block inside the function can be extracted and given a meaningful name,
+   extract it.
+5. Do not create tiny wrappers that add no meaning merely to satisfy these rules.
+
+When a request is to add or change behavior, do not refactor unrelated long
+functions in the same change. Note them in the completion report and propose a
+separate refactoring task.
+
+When refactoring an existing long function:
+
+1. Confirm tests cover its current behavior; add tests first if they do not.
+2. Split it without changing behavior.
+3. Run the tests after each split.
 
 ### Comments and Rationale
 
@@ -190,19 +231,31 @@ Before declaring a non-trivial coding task complete:
 
 1. Identify the applicable acceptance criteria in `specification.md`.
 2. Run the repository's relevant tests, linting, formatting checks, type checks, and build commands.
-3. Verify each acceptance criterion against the actual system state.
-4. Test expected behavior and important failure or edge cases.
-5. Review the final diff for:
+3. Run the function-size checks. For Python, use ruff with these rules enabled:
+   `ruff check --select C901,PLR0911,PLR0912,PLR0913,PLR0915 .`
+   The limits are configured in `ruff.toml` to match Function Size and
+   Responsibility; if the project moves ruff settings into `pyproject.toml`, keep
+   the same limits. For other languages, use the equivalent linter rules. Fix every
+   violation or justify it in the function's docstring.
+4. Review responsibility for every new or modified function. When subagents are
+   available, delegate this to a reviewer that did not write the code. Produce a
+   table with one row per function: name | one-sentence responsibility | needs
+   "and" to describe (yes/no) | mixes I/O with computation (yes/no). Split every
+   function marked "yes", or record why it must remain as written.
+5. Verify each acceptance criterion against the actual system state.
+6. Test expected behavior and important failure or edge cases.
+7. Review the final diff for:
    - unrelated changes;
    - incomplete implementation;
    - incorrect assumptions;
    - regressions;
    - unnecessary complexity;
+   - functions that exceed size limits or combine responsibilities;
    - security or compatibility risks.
-6. Confirm that documentation remains accurate; for README changes, verify its reader
+8. Confirm that documentation remains accurate; for README changes, verify its reader
    paths, relative links, referenced files, current status, and safe commands.
-7. Confirm that no credentials, secrets, private data, or local configuration were introduced.
-8. Do not treat passing tests as sufficient when the tests do not cover the complete specification.
+9. Confirm that no credentials, secrets, private data, or local configuration were introduced.
+10. Do not treat passing tests as sufficient when the tests do not cover the complete specification.
 
 Never claim that a task or check passed unless it was actually verified successfully. If a required check cannot be performed, state what was not checked, why, and what remains uncertain.
 
@@ -214,7 +267,9 @@ At the end of a task, provide a concise report containing:
 2. Which files changed.
 3. What was verified, including commands and results.
 4. Which acceptance criteria were confirmed.
-5. Assumptions, limitations, and anything that remains unverified.
-6. The next relevant step, only if one remains.
+5. Functions that exceed a size limit, with the stated reason, and existing long
+   functions noticed but left unchanged.
+6. Assumptions, limitations, and anything that remains unverified.
+7. The next relevant step, only if one remains.
 
 Code generation alone does not constitute completion. A task is complete only when the requirements are satisfied and the result has been verified.

@@ -1,0 +1,21 @@
+# Function-size limits that enforce AGENTS.md "Function Size and Responsibility".
+# Keep these numbers in sync with AGENTS.md and docs/coding-principles.md.
+
+[lint]
+extend-select = [
+    "C901",     # cyclomatic complexity
+    "PLR0911",  # too many return statements
+    "PLR0912",  # too many branches
+    "PLR0913",  # too many arguments
+    "PLR0915",  # too many statements
+]
+
+[lint.mccabe]
+max-complexity = 10
+
+[lint.pylint]
+max-args = 5
+max-branches = 10
+max-returns = 4
+# Ruff counts statements, not lines; 40 statements approximates the 40-line limit.
+max-statements = 40
